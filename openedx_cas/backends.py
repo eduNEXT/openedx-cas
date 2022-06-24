@@ -2,9 +2,15 @@
 implementation.
 """
 from social_core.backends.base import BaseAuth
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ImproperlyConfigured
+from django_cas_ng.backends import CASBackend
+import urllib.parse
 
+import warnings
 
-class CASAuth(BaseAuth):
+class CASAuth(CASBackend, BaseAuth):
     """CAS authentication backend base class.
 
     Settings will be inspected to get more values names that should be
@@ -25,7 +31,7 @@ class CASAuth(BaseAuth):
 
         Redirect /CAS-provider-domain/
         """
-        raise NotImplementedError("Not implemented yet")
+        return f"{settings.CAS_SERVER_URL}?service={urllib.parse.quote(f'http://{settings.LMS_BASE}/auth/complete/centralized-auth-service/?next=/login')}"
 
     def auth_complete(self, *args, **kwargs):
         """Completes login process, must return user instance.
@@ -37,5 +43,18 @@ class CASAuth(BaseAuth):
         Request:
         GET
 	    https://CAS-provider-domain/auth/complete/?ticket=ticket
+        :returns: [User] Authenticated User object or None if authenticate failed
         """
-        raise NotImplementedError("Not implemented yet")
+        """
+        Verifies CAS ticket and gets or creates User object
+        
+        """
+        request = kwargs['request']
+        ticket = request.GET['ticket']
+        service = f"http://{settings.LMS_BASE}/auth/complete/centralized-auth-service/?next=/login"
+
+        x = super(CASAuth, self).authenticate(request=request, ticket=ticket, service=service)
+        
+        kwargs.update({'backend':self})
+
+        return self.strategy.authenticate(*args, **kwargs)
