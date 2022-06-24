@@ -22,6 +22,3 @@ jobs:
 
     - name: Install Dependencies
       run: pip install -r requirements/dev.txt
-
-    - name: Check Keywords
-      run: make check_keywords

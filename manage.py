@@ -9,7 +9,7 @@ import sys
 PWD = os.path.abspath(os.path.dirname(__file__))
 
 if __name__ == '__main__':
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test_settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'openedx_cas.settings.test')
     sys.path.append(PWD)
     try:
         from django.core.management import execute_from_command_line
@@ -18,7 +18,7 @@ if __name__ == '__main__':
         # issue is really that Django is missing to avoid masking other
         # exceptions on Python 2.
         try:
-            import django  # pylint: disable=unused-import, wrong-import-position
+            import django  # pylint: disable=unused-import
         except ImportError as import_error:
             raise ImportError(
                 "Couldn't import Django. Are you sure it's installed and "
