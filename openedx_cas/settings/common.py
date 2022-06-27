@@ -10,7 +10,8 @@ def plugin_settings(settings):
     """
     settings.CAS_SERVER_URL = "https://ingreso.preprod-ceibal.edu.uy/"
     settings.CAS_SERVER_LOGIN_URL = "https://ingreso.preprod-ceibal.edu.uy/loginunico/username.xhtml"
-    settings.AUTHENTICATION_BACKENDS.append("openedx_cas.backends.CASAuth")
+    if "openedx_cas.backends.CASAuth" not in settings.AUTHENTICATION_BACKENDS:
+        settings.AUTHENTICATION_BACKENDS = ["openedx_cas.backends.CASAuth"] + settings.AUTHENTICATION_BACKENDS
     settings.CAS_CREATE_USER= True
     settings.CAS_VERSION = 3
     settings.INSTALLED_APPS.append("django_cas_ng")
