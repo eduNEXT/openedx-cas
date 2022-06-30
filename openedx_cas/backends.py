@@ -11,18 +11,23 @@ import urllib.parse
 from django_cas_ng.utils import get_cas_client
 from django.contrib.auth import get_user_model
 
+import logging
 import warnings
 
 UserModel = get_user_model()
 
+logger = logging.getLogger(__name__)
+
 class CASBackendOverride(CASBackend):
 
-    def cas_validation(self, request, ticket, service, **kwargs):
+    def cas_validation(self, request, ticket, service):
         client = get_cas_client(service_url=service, request=request)
         username, attributes, pgtiou = client.verify_ticket(ticket)
 
         if not username:
-            raise AuthFailed("Couldn't find username associated with ticket")
+            message = f"Couldn't find username associated with ticket{ticket}"
+            logger.error(message)
+            raise AuthFailed(message)
 
         if attributes and request:
             request.session['attributes'] = attributes
@@ -38,6 +43,7 @@ class CASBackendOverride(CASBackend):
         if attributes:
             reject = self.bad_attributes_reject(request, username, attributes)
             if reject:
+                logger.error(f"Attributes don't allowed {attributes}")
                 return None
 
             # If we can, we rename the attributes as described in the settings file
@@ -74,7 +80,7 @@ class CASAuth(BaseAuth, CASBackendOverride):
 
         Redirect /CAS-provider-domain/
         """
-        return f"{settings.CAS_SERVER_URL}?service={urllib.parse.quote(f'http://{settings.LMS_BASE}/auth/complete/centralized-auth-service/?next=/login')}"
+        return f"{settings.CAS_SERVER_URL}?service={urllib.parse.quote(f'http://{settings.LMS_BASE}/auth/complete/centralized-auth-service/?next=/')}"
 
     def auth_complete(self, *args, **kwargs):
         """Completes login process, must return user instance.
@@ -92,6 +98,7 @@ class CASAuth(BaseAuth, CASBackendOverride):
         ticket = request.GET['ticket']
         service = f"http://{settings.LMS_BASE}/auth/complete/centralized-auth-service/?next=/"
         response = self.cas_validation(request, ticket, service)
+        logger.info(f"CAS Response: {response}")
         kwargs.update({'response': response, 'backend': self})
         return self.strategy.authenticate(*args, **kwargs)
 

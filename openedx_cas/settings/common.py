@@ -14,4 +14,3 @@ def plugin_settings(settings):
         settings.AUTHENTICATION_BACKENDS = ["openedx_cas.backends.CASAuth"] + settings.AUTHENTICATION_BACKENDS
     settings.CAS_CREATE_USER= True
     settings.CAS_VERSION = 3
-    settings.INSTALLED_APPS.append("django_cas_ng")
