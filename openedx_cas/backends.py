@@ -110,3 +110,6 @@ class CASAuth(BaseAuth, CASBackendOverride):
             'first_name': response.get("first_name", ""),
             'last_name': response.get("last_name", ""),
         }
+
+    def get_user_id(self, details, response):
+        return details['username']

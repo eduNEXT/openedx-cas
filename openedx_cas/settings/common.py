@@ -14,3 +14,6 @@ def plugin_settings(settings):
         settings.AUTHENTICATION_BACKENDS = ["openedx_cas.backends.CASAuth"] + settings.AUTHENTICATION_BACKENDS
     settings.CAS_CREATE_USER= True
     settings.CAS_VERSION = 3
+    settings. CAS_VERIFY_SSL_CERTIFICATE = False
+    settings.CAS_EXTRA_LOGIN_PARAMS = None
+    settings.CAS_RENEW = False
