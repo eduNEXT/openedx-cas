@@ -7,8 +7,9 @@ from django.conf import settings
 from django.test import TestCase
 import urllib.parse
 from ddt import data, ddt, unpack
+from social_core.exceptions import AuthFailed
 
-from openedx_cas.backends import CASAuth
+from openedx_cas.backends import CASAuth, CASBackendOverride
 
 
 @ddt
@@ -16,6 +17,11 @@ class TestOpenEdxCasAuthBackend(TestCase):
     """
     Test class to verify standard behavior of utility methods that belong to CASAuth.
     """
+
+    def setUp(self) -> None:
+        super().setUp()
+        strategy = Mock()
+        self.cas_backend = CASAuth(strategy=strategy)
 
     def test_cas_serice_url_defined_in_settings(self):
         """
@@ -30,28 +36,22 @@ class TestOpenEdxCasAuthBackend(TestCase):
         self.assertIn(urllib.parse.quote(settings.CAS_SERVICE_URL), auth_url)
 
     @patch('openedx_cas.backends.CASAuth.cas_validation')
-    def test_auth_complete_ticket_validated(self):
+    def test_auth_complete_ticket_validated(self, cas_validation):
         """
         This method is used to verify that the flow is valid when the ticket is valid
 
         Expected behavior:
         Response returned by auth_complete should include the correspoding values when the ticket is valid
         """
-        strategy = Mock()
-        cas_backend = CASAuth(strategy=strategy)
+        cas_validation.return_value = {
+            'username': 'edxplatform'
+        }
         service_response = {"ticket": "213123123-123123123"}
         request = Mock(GET=service_response)
-        answer = cas_backend.auth_complete(request=request)
-        # TODO In progress
+        self.cas_backend.auth_complete(request=request)
 
-    def test_auth_complete_ticket_not_valid(self):
-        """
-        This method is used to verify that the flow is valid when the ticket is invalid
-
-        Expected behavior:
-        Response returned by auth_complete should include the correspoding values when the ticket is invalid
-        """
-        ...
+        self.cas_backend.strategy.authenticate.assert_called_with(request=request, response={'username': 'edxplatform'},
+                                                                  backend=self.cas_backend)
 
     @unpack
     @data({'username': 'test_has_value',
@@ -72,9 +72,7 @@ class TestOpenEdxCasAuthBackend(TestCase):
         Expected behavior:
         Returns a dict with the corresponding information
         """
-        strategy = Mock()
-        cas_backend = CASAuth(strategy=strategy)
-        response = cas_backend.get_user_details(kwargs)
+        response = self.cas_backend.get_user_details(kwargs)
 
         for argument in kwargs:
             value = kwargs[argument]
@@ -103,10 +101,7 @@ class TestOpenEdxCasAuthBackend(TestCase):
         Expected behavior:
         Returns the username sended
         """
-        strategy = Mock()
-        cas_backend = CASAuth(strategy=strategy)
-
-        username = cas_backend.get_user_id(details=details, response=response)
+        username = self.cas_backend.get_user_id(details=details, response=response)
         self.assertEqual(username, details['username'])
 
     def test_get_user_id_doesnt_exists(self):
@@ -116,7 +111,50 @@ class TestOpenEdxCasAuthBackend(TestCase):
         Expected behavior:
         Throws an KeyError exception
         """
-        strategy = Mock()
-        cas_backend = CASAuth(strategy=strategy)
+        self.assertRaises(KeyError, lambda: self.cas_backend.get_user_id(details={}, response={}))
 
-        self.assertRaises(KeyError, lambda: cas_backend.get_user_id(details={}, response={}))
+
+@ddt
+class TestCASBackendOverride(TestCase):
+
+    def setUp(self) -> None:
+        self.cas_backend_override = CASBackendOverride()
+
+        super().setUp()
+
+    @patch('openedx_cas.backends.get_cas_client')
+    @data(
+        ('edxplatform', [], None)
+    )
+    @unpack
+    def test_cas_validation_returns_username(self, username, attributes, pgtiou, get_cas_client):
+        """
+        This method is used to verify the cas_validation method returns none when there is no username found
+
+        Expected behavior:
+        Returns none
+        """
+        get_cas_client.return_value.verify_ticket.return_value = (username, attributes, pgtiou)
+        request = Mock()
+        ticket = 'sadasdasd-asdasdasd'
+        service = 'local.overhang.io'
+        response = self.cas_backend_override.cas_validation(request, ticket, service)
+        self.assertDictEqual({
+            "username": username,
+        },
+            response
+        )
+
+    @patch('openedx_cas.backends.get_cas_client')
+    def test_cas_validation_returns_none_when_no_username(self, get_cas_client):
+        """
+        This method is used to verify the cas_validation method returns the username whenever it's found
+
+        Expected behavior:
+        Returns a dict with a key called 'username'
+        """
+        get_cas_client.return_value.verify_ticket.return_value = (None, None, None)
+        request = Mock()
+        ticket = 'sadasdasd-asdasdasd'
+        service = 'local.overhang.io'
+        self.assertRaises(AuthFailed, lambda: self.cas_backend_override.cas_validation(request, ticket, service))
