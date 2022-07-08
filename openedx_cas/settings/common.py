@@ -12,5 +12,12 @@ def plugin_settings(settings):
     settings.CAS_SERVER_LOGIN_URL = "https://ingreso.preprod-ceibal.edu.uy/loginunico/username.xhtml"
     if "openedx_cas.backends.CASAuth" not in settings.AUTHENTICATION_BACKENDS:
         settings.AUTHENTICATION_BACKENDS = ["openedx_cas.backends.CASAuth"] + settings.AUTHENTICATION_BACKENDS
-    settings.CAS_CREATE_USER= True
+    settings.CAS_CREATE_USER = False
     settings.CAS_VERSION = 3
+    settings.CAS_VERIFY_SSL_CERTIFICATE = False
+    settings.CAS_EXTRA_LOGIN_PARAMS = None
+    settings.CAS_RENEW = False
+    settings.CAS_USERNAME_ATTRIBUTE = "cas:user"
+    settings.CAS_PROXY_CALLBACK = None
+    settings.CAS_SESSION_FACTORY = None
+    settings.CAS_RENAME_ATTRIBUTES = {}
