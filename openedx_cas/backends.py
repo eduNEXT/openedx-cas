@@ -4,19 +4,17 @@ implementation.
 from social_core.backends.base import BaseAuth
 from social_core.exceptions import AuthFailed
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.core.exceptions import ImproperlyConfigured
 from django_cas_ng.backends import CASBackend
 import urllib.parse
 from django_cas_ng.utils import get_cas_client
 from django.contrib.auth import get_user_model
 
 import logging
-import warnings
 
 UserModel = get_user_model()
 
 logger = logging.getLogger(__name__)
+
 
 class CASBackendOverride(CASBackend):
 
@@ -59,6 +57,7 @@ class CASBackendOverride(CASBackend):
             "username": username,
         }
 
+
 class CASAuth(BaseAuth, CASBackendOverride):
     """CAS authentication backend base class.
 
@@ -80,7 +79,8 @@ class CASAuth(BaseAuth, CASBackendOverride):
 
         Redirect /CAS-provider-domain/
         """
-        return f"{settings.CAS_SERVER_URL}?service={urllib.parse.quote(f'http://{settings.LMS_BASE}/auth/complete/centralized-auth-service/?next=/')}"
+        settings.CAS_SERVICE_URL = f'http://{settings.LMS_BASE}/auth/complete/{self.name}/?next=/'
+        return f"{settings.CAS_SERVER_URL}?service={urllib.parse.quote(settings.CAS_SERVICE_URL)}"
 
     def auth_complete(self, *args, **kwargs):
         """Completes login process, must return user instance.
@@ -91,12 +91,12 @@ class CASAuth(BaseAuth, CASBackendOverride):
 
         Request:
         GET
-	    https://CAS-provider-domain/auth/complete/?ticket=ticket
+        https://CAS-provider-domain/auth/complete/?ticket=ticket
         :returns: [User] Authenticated User object or None if authenticate failed
         """
         request = kwargs['request']
         ticket = request.GET['ticket']
-        service = f"http://{settings.LMS_BASE}/auth/complete/centralized-auth-service/?next=/"
+        service = settings.CAS_SERVICE_URL
         response = self.cas_validation(request, ticket, service)
         logger.info(f"CAS Response: {response}")
         kwargs.update({'response': response, 'backend': self})
@@ -110,3 +110,6 @@ class CASAuth(BaseAuth, CASBackendOverride):
             'first_name': response.get("first_name", ""),
             'last_name': response.get("last_name", ""),
         }
+
+    def get_user_id(self, details, response):
+        return details['username']
