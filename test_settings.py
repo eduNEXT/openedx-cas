@@ -39,7 +39,6 @@ LOCALE_PATHS = [
     root('openedx_cas', 'conf', 'locale'),
 ]
 
-ROOT_URLCONF = 'openedx_cas.urls'
 
 SECRET_KEY = 'insecure-secret-key'
 

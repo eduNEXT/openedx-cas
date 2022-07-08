@@ -20,14 +20,11 @@ SETTINGS = SettingsClass()
 plugin_settings(SETTINGS)
 vars().update(SETTINGS.__dict__)
 
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'openedx_demo_plugin',
 )
-
 
 DATABASES = {
     'default': {
@@ -40,5 +37,18 @@ DATABASES = {
     }
 }
 
-
 SECRET_KEY = 'insecure-secret-key'
+
+LMS_BASE = 'https://local.overhangio.io'
+CAS_SERVER_URL = 'https://local.overhangio.io'
+CAS_SERVICE_URL = 'https://local.overhangio.io'
+
+CAS_CREATE_USER = False
+CAS_VERSION = 3
+CAS_VERIFY_SSL_CERTIFICATE = False
+CAS_EXTRA_LOGIN_PARAMS = None
+CAS_RENEW = False
+CAS_USERNAME_ATTRIBUTE = "cas:user"
+CAS_PROXY_CALLBACK = None
+CAS_SESSION_FACTORY = None
+CAS_RENAME_ATTRIBUTES = {}
