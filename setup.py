@@ -130,9 +130,6 @@ setup(
     entry_points={
         "lms.djangoapp": [
             'openedx_cas = openedx_cas.apps:OpenedxCasConfig',
-        ],
-        "cms.djangoapp": [
-            'openedx_cas = openedx_cas.apps:OpenedxCasConfig',
-        ],
+        ]
     },
 )
