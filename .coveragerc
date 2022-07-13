@@ -7,3 +7,6 @@ omit =
     *admin.py
     *static*
     *templates*
+    *settings*
+    *openedx_cas/__init__.py
+    *apps.py
