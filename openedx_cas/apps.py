@@ -11,6 +11,7 @@ class OpenedxCasConfig(AppConfig):
     """
 
     name = 'openedx_cas'
+    verbose_name = 'Centralized Authentication Service (CAS)'
 
     plugin_app = {
         'settings_config': {
@@ -20,3 +21,8 @@ class OpenedxCasConfig(AppConfig):
             }
         },
     }
+
+    def ready(self):
+        """Execute functions once the plugin finished loading."""
+        from openedx_cas.proxy import load_registry_override  # pylint: disable=import-outside-toplevel
+        load_registry_override()
