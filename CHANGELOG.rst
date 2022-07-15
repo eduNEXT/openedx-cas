@@ -14,7 +14,14 @@ Change Log
 Unreleased
 ~~~~~~~~~~
 
-*
+[0.2.0] - 2022-07-15
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Added
+_____
+
+* First working implementation of CAS backend.
+* Integration with the Maple Open edX Release.
 
 [0.1.0] - 2022-06-17
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
