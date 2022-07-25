@@ -105,9 +105,9 @@ setup(
     version=VERSION,
     description="""Support for Certralized Authentication System (CAS) in the Open edX authentication flows""",
     long_description=README + '\n\n' + CHANGELOG,
-    author='edX',
-    author_email='oscm@edx.org',
-    url='https://github.com/edx/openedx-cas',
+    author='eduNEXT',
+    author_email='technical@edunext.co',
+    url='https://github.com/eduNEXT/openedx-cas',
     packages=[
         'openedx_cas',
     ],
@@ -116,7 +116,7 @@ setup(
     python_requires=">=3.8",
     license="AGPL 3.0",
     zip_safe=False,
-    keywords='Python edx',
+    keywords='Python Openedx',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Django',
