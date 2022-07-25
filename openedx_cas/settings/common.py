@@ -20,3 +20,4 @@ def plugin_settings(settings):
     settings.CAS_PROXY_CALLBACK = None
     settings.CAS_SESSION_FACTORY = None
     settings.CAS_RENAME_ATTRIBUTES = {}
+    settings.CAS_FORCE_CHANGE_USERNAME_CASE = "lower"
