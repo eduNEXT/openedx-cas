@@ -52,7 +52,12 @@ class CASProviderConfig(ProviderConfig):
 
 
 class RegistryOverride(Registry):
-    """Class override for TPA Registry API specifically adding CAS providers."""
+    """
+    Class override for TPA Registry API specifically adding CAS providers.
+
+    This monkey-patch is a temporary solution so the plugin works out-of-the-box
+    after installation.
+    """
 
     @classmethod
     def _enabled_providers(cls):
