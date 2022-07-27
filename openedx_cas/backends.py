@@ -60,7 +60,11 @@ class CASAuth(BaseAuth, CASBackend):
         :returns: [User] Authenticated User object or None if authenticate failed
         """
         request = kwargs["request"]
-        ticket = request.GET["ticket"]
+        ticket = request.GET.get("ticket", None)
+
+        if not ticket:
+            raise AuthMissingParameter(self, "ticket")
+
         response = self.cas_validation(request, ticket, settings.CAS_SERVICE_URL)
         kwargs.update({"response": response, "backend": self})
 
