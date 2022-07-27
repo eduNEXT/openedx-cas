@@ -14,6 +14,16 @@ Change Log
 Unreleased
 ~~~~~~~~~~
 
+
+[0.2.2] - 2022-07-27
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Added
+_____
+
+* Raise AuthMissingParameter if there is no ticket in the service response.
+
+
 [0.2.1] - 2022-07-26
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
