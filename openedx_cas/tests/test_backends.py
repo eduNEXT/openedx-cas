@@ -79,6 +79,38 @@ class TestOpenEdxCasAuthBackend(TestCase):
             backend=self.cas_backend
         )
 
+    @override_settings(CAS_REDIRECT_WITHOUT_TICKET=True)
+    @override_settings(LOGIN_URL="/login")
+    @patch('openedx_cas.backends.redirect')
+    def test_auth_complete_redirect_on_missing_ticket(self, redirect):
+        """
+        This method is used to verify that the flow is valid when the ticket is valid.
+
+        Expected behavior:
+        Response returned by auth_complete should include the correspoding values when the ticket is valid
+        """
+        service_response = {}
+        request = Mock(GET=service_response)
+
+        self.cas_backend.auth_complete(request=request)
+
+        redirect.assert_called_with(
+            settings.LOGIN_URL
+        )
+
+    @override_settings(CAS_REDIRECT_WITHOUT_TICKET=None)
+    def test_auth_complete_raises_on_missing_ticket(self):
+        """
+        This method is used to verify that the flow is valid when the ticket is valid.
+
+        Expected behavior:
+        Response returned by auth_complete should include the correspoding values when the ticket is valid
+        """
+        service_response = {}
+        request = Mock(GET=service_response)
+
+        self.assertRaises(AuthMissingParameter, self.cas_backend.auth_complete, request=request)
+
     @unpack
     @data(
         {
