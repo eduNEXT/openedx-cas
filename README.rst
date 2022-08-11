@@ -49,6 +49,20 @@ The required configuration includes:
         "CAS_SERVICE_URL": "https://LMS_BASE/auth/complete/centralized-auth-service/?next=/"
     }
 
+Optional configuration:
+
+.. code-block:: json
+
+    {
+        "CAS_REDIRECT_WITHOUT_TICKET": true
+    }
+
+This settings allows you to modify the default behavior when the auth/complete backend receives a request without ticket. Usually when the user reset his password in the CAS Server and it's automatically redirected to the LMS.
+
+Expected behavior:
+    - true: Redirects to login automatically
+    - false: Raise an AuthMissingParameter exception
+
 We advise you to use the following third party auth pipeline:
 
 .. code-block:: json

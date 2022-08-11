@@ -9,6 +9,7 @@ import urllib.parse
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.shortcuts import redirect
 from django_cas_ng.backends import CASBackend
 from django_cas_ng.utils import get_cas_client
 from social_core.backends.base import BaseAuth
@@ -63,7 +64,13 @@ class CASAuth(BaseAuth, CASBackend):
         ticket = request.GET.get("ticket", None)
 
         if not ticket:
-            raise AuthMissingParameter(self, "ticket")
+            logger.error("Ticket was not found in the request to authenticate user")
+            # The setting is added to allow changing the behavior when there is not
+            # ticket in the request. Usually when the user changes his password.
+            if getattr(settings, "CAS_REDIRECT_WITHOUT_TICKET", None):
+                return redirect(settings.LOGIN_URL)
+            else:
+                raise AuthMissingParameter(self, "ticket")
 
         response = self.cas_validation(request, ticket, settings.CAS_SERVICE_URL)
         kwargs.update({"response": response, "backend": self})
