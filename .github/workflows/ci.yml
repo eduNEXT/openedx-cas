@@ -26,8 +26,8 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.toxenv == 'py311-django42' && '3.11' || matrix.toxenv == 'py311-django52' && '3.11' || matrix.toxenv == 'py312-django42' && '3.12' || matrix.toxenv == 'py312-django52' && '3.12' || '3.11' }}
-    - name: Install pip
-      run: pip install -r requirements/pip.txt
+    - name: Upgrade pip and setuptools
+      run: pip install --upgrade pip setuptools wheel
     - name: Install Dependencies
       run: pip install -r requirements/ci.txt
     - name: Run Tests
