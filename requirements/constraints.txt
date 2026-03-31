@@ -10,4 +10,4 @@
 
 # Common constraints for edx repos
 -c https://raw.githubusercontent.com/edx/edx-lint/master/edx_lint/files/common_constraints.txt
-social-auth-core==4.1.0
+social-auth-core==4.8.5
