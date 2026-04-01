@@ -195,3 +195,20 @@ For more information about these options, see the `Getting Help`_ page.
 .. |license-badge| image:: https://img.shields.io/github/license/eduNEXT/openedx-cas.svg
     :target: https://github.com/eduNEXT/openedx-cas/blob/main/LICENSE.txt
     :alt: License
+
+## Compatibility Notes
+-------------------------
+
++---------------------+----------------+
+|  Open edX Release   |  Version       |
++=====================+================+
+|  Redwood            |  <= 0.2.4      |
++---------------------+----------------+
+|  Sumac              |  >= 1.0.0      |
++---------------------+----------------+
+|  Teak               |  >= 1.0.0      |
++---------------------+----------------+
+|  Ulmo               |  >= 1.0.0      |
++---------------------+----------------+
+
+**Note:** Version 0.3.0 and later are compatible with Sumac, Teak, and Ulmo. For releases Redwood and earlier, please use version 0.2.4 or any 0.2.x release.
