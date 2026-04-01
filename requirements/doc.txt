@@ -41,11 +41,11 @@ coverage[toml]==7.13.5
 cryptography==46.0.6
     # via
     #   -r requirements/test.txt
-    #   pyjwt
     #   secretstorage
+    #   social-auth-core
 ddt==1.7.2
     # via -r requirements/test.txt
-defusedxml==0.7.1
+defusedxml==0.8.0rc2
     # via
     #   -r requirements/test.txt
     #   python3-openid
@@ -145,7 +145,7 @@ pygments==2.20.0
     #   readme-renderer
     #   rich
     #   sphinx
-pyjwt[crypto]==2.12.1
+pyjwt==2.12.1
     # via
     #   -r requirements/test.txt
     #   social-auth-core
@@ -205,7 +205,7 @@ six==1.17.0
     # via edx-sphinx-theme
 snowballstemmer==3.0.1
     # via sphinx
-social-auth-core==4.8.5
+social-auth-core==4.5.4
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/test.txt

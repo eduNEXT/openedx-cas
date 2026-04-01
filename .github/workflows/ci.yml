@@ -10,7 +10,7 @@ on:
 jobs:
   run_tests:
     name: tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         toxenv: [
@@ -28,8 +28,10 @@ jobs:
         python-version: ${{ matrix.toxenv == 'py311-django42' && '3.11' || matrix.toxenv == 'py311-django52' && '3.11' || matrix.toxenv == 'py312-django42' && '3.12' || matrix.toxenv == 'py312-django52' && '3.12' || '3.11' }}
     - name: Upgrade pip and setuptools
       run: pip install --upgrade pip setuptools wheel
+
     - name: Install Dependencies
       run: pip install -r requirements/ci.txt
+
     - name: Run Tests
       env:
         TOXENV: ${{ matrix.toxenv }}

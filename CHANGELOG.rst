@@ -14,14 +14,14 @@ Change Log
 Unreleased
 ~~~~~~~~~~
 
-[0.3.0] - 2026-03-30
+[1.0.0] - 2026-03-30
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Added
 _____
 
 * Support for Python 3.11 and 3.12.
-* Support for Django 4.2 and 5.2 (compatible with Open edX Teak).
+* Support for Django 4.2 and 5.2 (compatible with Open edX Teak and Ulmo releases).
 * New GitHub Actions test matrix with the supported Python/Django combinations.
 * Set `DJANGO_SETTINGS_MODULE` in the `quality` tox environment to avoid pylint configuration errors.
 
@@ -40,6 +40,7 @@ _______
 
 * Dropped support for Python 3.8.
 * Dropped support for Django 2.2, 3.2, and 4.0.
+* Dropped support for Open edX releases prior to Sumac.
 * Removed obsolete pylint options (regenerated `.pylintrc` with edx-lint).
 
 Fixed
