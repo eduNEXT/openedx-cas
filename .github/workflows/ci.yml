@@ -7,21 +7,27 @@ on:
     branches:
     - '**'
 
-
 jobs:
   run_tests:
     name: tests
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        os: [ubuntu-20.04]
-        python-version: ['3.8']
-        toxenv: [quality, django32, django40]
+        include:
+          - python-version: "3.11"
+            toxenv: "py311-django42"
+          - python-version: "3.11"
+            toxenv: "py311-django52"
+          - python-version: "3.12"
+            toxenv: "py312-django52"
+          - python-version: "3.11"
+            toxenv: "quality"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+
     - name: setup python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
