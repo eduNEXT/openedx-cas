@@ -14,6 +14,20 @@ Change Log
 Unreleased
 ~~~~~~~~~~
 
+[1.0.1] - 2026-11-09
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Changed
+_______
+
+* Relaxed the ``social-auth-core`` constraint to ``<5.0.0`` (aligned with edx-lint ``common_constraints.txt``) so installing this plugin no longer downgrades the version pinned by Open edX Verawood (4.9.0).
+* Upgraded all dependencies via ``make upgrade``.
+
+Fixed
+_____
+
+* Fixed Verawood image builds failing with ``ImportError: cannot import name 'AuthInvalidParameter' from 'social_core.exceptions'``. Installing the plugin downgraded ``social-auth-core`` to 4.5.4, but that class only exists from 4.7.0 onward.
+
 [1.0.0] - 2026-03-30
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
