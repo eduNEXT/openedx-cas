@@ -22,8 +22,10 @@ charset-normalizer==3.5.2
     #   requests
 click==8.5.1
     # via code-annotations
-code-annotations==3.0.0
-    # via -r requirements/test.in
+code-annotations==2.3.2
+    # via
+    #   -c requirements/constraints.txt
+    #   -r requirements/test.in
 coverage[toml]==7.17.2
     # via pytest-cov
 cryptography==50.0.2

@@ -32,8 +32,9 @@ click==8.5.1
     #   edx-lint
 click-log==0.4.0
     # via edx-lint
-code-annotations==3.0.0
+code-annotations==2.3.2
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/test.txt
     #   edx-lint
 coverage[toml]==7.17.2

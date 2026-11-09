@@ -49,8 +49,9 @@ click-log==0.4.0
     # via
     #   -r requirements/quality.txt
     #   edx-lint
-code-annotations==3.0.0
+code-annotations==2.3.2
     # via
+    #   -c requirements/constraints.txt
     #   -r requirements/quality.txt
     #   edx-lint
 codecov==2.1.13
