@@ -210,5 +210,7 @@ For more information about these options, see the `Getting Help`_ page.
 +---------------------+----------------+
 |  Ulmo               |  >= 1.0.0      |
 +---------------------+----------------+
+|  Verawood           |  >= 1.0.1      |
++---------------------+----------------+
 
 **Note:** Version 0.3.0 and later are compatible with Sumac, Teak, and Ulmo. For releases Redwood and earlier, please use version 0.2.4 or any 0.2.x release.
